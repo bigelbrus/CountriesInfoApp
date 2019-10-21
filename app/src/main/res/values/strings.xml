@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">CountriesInfoApp</string>
+    <string name="tv_select_country">Select a country</string>
+    <string name="tv_error">Something was going wrong! Try again</string>
+    <string name="example_coutry_name">Very long example country name just for test</string>
+    <string name="example_country_capital">Example country capital</string>
+    <string name="tv_capital_label_detail">Capital</string>
+    <string name="tv_population_label_detail">Population</string>
+    <string name="example_population">2589372</string>
+    <string name="tv_currency_label_detail">Currency</string>
+    <string name="example_currency">Example currency</string>
+    <string name="tv_region_label_detail">Region</string>
+    <string name="example_region">Example region</string>
+</resources>
