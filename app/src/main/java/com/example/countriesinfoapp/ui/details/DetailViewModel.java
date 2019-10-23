@@ -1,6 +1,5 @@
 package com.example.countriesinfoapp.ui.details;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 

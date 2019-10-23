@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.countriesinfoapp.data.DataRepository;
-import com.example.countriesinfoapp.data.network.Country;
 import com.example.countriesinfoapp.data.network.CountryNames;
 
 import java.util.List;

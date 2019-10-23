@@ -1,11 +1,8 @@
 package com.example.countriesinfoapp.data;
 
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -16,16 +13,11 @@ import com.example.countriesinfoapp.data.network.Country;
 import com.example.countriesinfoapp.data.network.CountryNames;
 import com.example.countriesinfoapp.data.network.Currency;
 import com.example.countriesinfoapp.data.network.JSONCountriesApi;
-import com.example.countriesinfoapp.ui.details.DetailActivity;
-import com.example.countriesinfoapp.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 
 import io.realm.Realm;
-import io.realm.RealmQuery;
-import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +25,7 @@ import retrofit2.Response;
 public class DataRepository {
     private static DataRepository sInstance;
     private static final Object LOCK = new Object();
+    private static final String LOG = DataRepository.class.getSimpleName();
     private Realm mRealm;
     private JSONCountriesApi mApi;
     private AppExecutors mExecutors;
@@ -42,11 +35,11 @@ public class DataRepository {
     public static DataRepository getInstance(JSONCountriesApi api, Realm realm, AppExecutors executors) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                Log.d("tag", "getInstance data");
+                Log.d("tag", "DataRepository instantiate");
                 sInstance = new DataRepository(api, realm, executors);
             }
         }
-        Log.d("tag", "DataRepository getInstance data return");
+        Log.d("tag", "DataRepository return instance");
 
         return sInstance;
     }
@@ -81,8 +74,6 @@ public class DataRepository {
             }
             mRealm.commitTransaction();
         });
-
-//        getRealmObjects();
     }
 
     public LiveData<List<CountryNames>> getList() {
@@ -91,14 +82,13 @@ public class DataRepository {
 
 
     public LiveData<Country> getCountryByName(String countryName) {
-        DBCountry currentCountryFromDB = mRealm.where(DBCountry.class).contains("name",countryName).findFirst();
-        Log.d("tag",currentCountryFromDB.getName());
-        if (currentCountryFromDB.getCapital() != null){
-            Log.d("tag","download from db");
-            MutableLiveData<Country> data= new MutableLiveData<>();
+        DBCountry currentCountryFromDB = mRealm.where(DBCountry.class).contains("name", countryName).findFirst();
+        Log.d(LOG, currentCountryFromDB.getName());
+        if (currentCountryFromDB.getCapital() != null) {
+            Log.d("tag", "Download Country object from realm");
+            MutableLiveData<Country> data = new MutableLiveData<>();
             List<Currency> currencyList = new ArrayList<>();
             currencyList.add(new Currency(currentCountryFromDB.getCurrency()));
-
             data.setValue(new Country(currentCountryFromDB.getName(),
                     currentCountryFromDB.getCapital(),
                     currentCountryFromDB.getRegion(),
@@ -115,16 +105,13 @@ public class DataRepository {
     }
 
     private void getCountryByNameFromNet(String countryName) {
-
         mExecutors.networkIO().execute(() -> {
-            Log.d("tag", "download from internet start");
-
             mApi.getCountryByName(countryName).enqueue(new Callback<List<Country>>() {
 
                 @Override
                 public void onResponse(Call<List<Country>> call, Response<List<Country>> response) {
                     mCountry.setValue(response.body().get(0));
-                    Log.d("tag", "download from internet");
+                    Log.d("tag", "Download Country object from internet");
                 }
 
                 @Override
@@ -134,34 +121,25 @@ public class DataRepository {
             });
         });
         mCountry.observeForever(country -> {
-            Log.d("tag","put to realm start");
+            mCountry.removeObserver(r -> {
+            });
             mRealm.beginTransaction();
             DBCountry c = mRealm.where(DBCountry.class).contains("name", country.getName()).findFirst();
-            c.setValues(c.getCapital()
-                    , c.getCurrency()
-                    , c.getRegion()
-                    , c.getPopulation()
-                    , c.getFlag());
+            c.setValues(country.getCapital()
+                    , country.getCurrencies().get(0).getName()
+                    , country.getRegion()
+                    , country.getPopulation()
+                    , country.getFlag());
             mRealm.copyToRealmOrUpdate(c);
             mRealm.commitTransaction();
 
-            Log.d("tag","put to realm "+ c.getCapital());
+            Log.d("tag", "Put Country object to realm");
 
         });
     }
 
-    public LiveData<Country> getCountry (){
+    public LiveData<Country> getCountry() {
         return mCountry;
     }
-
-//    public void getRealmObjects() {
-//        long result = mRealm.where(DBCountry.class).count();
-//        Log.d("tag", "Countries " + result);
-//        RealmResults<DBCountry> results = mRealm.where(DBCountry.class).contains("name","Rus").findAll();
-//        for (DBCountry d:results
-//             ) {
-//               Log.d("tag",d.getName());
-//        }
-//    }
 
 }

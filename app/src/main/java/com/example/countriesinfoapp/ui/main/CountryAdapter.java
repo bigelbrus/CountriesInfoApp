@@ -11,11 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.countriesinfoapp.R;
-import com.example.countriesinfoapp.data.network.Country;
 import com.example.countriesinfoapp.data.network.CountryNames;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryViewHolder> {
 
@@ -26,7 +24,6 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
     public CountryAdapter(Context context, CountryAdapterClickHandler clickHandler) {
         mClickHandler = clickHandler;
         mContext = context;
-        Log.d("tag","adapter");
     }
 
     @NonNull

@@ -1,12 +1,10 @@
 package com.example.countriesinfoapp.utilities;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.countriesinfoapp.AppExecutors;
 import com.example.countriesinfoapp.data.DataRepository;
 import com.example.countriesinfoapp.data.database.DatabaseDataSource;
-import com.example.countriesinfoapp.data.network.Country;
 import com.example.countriesinfoapp.data.network.JSONCountriesApi;
 import com.example.countriesinfoapp.data.network.NetworkDataSource;
 import com.example.countriesinfoapp.ui.details.DetailViewModelFactory;

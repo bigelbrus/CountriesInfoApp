@@ -1,7 +1,5 @@
 package com.example.countriesinfoapp.data.network;
 
-import androidx.lifecycle.LiveData;
-
 import java.util.List;
 
 import retrofit2.Call;

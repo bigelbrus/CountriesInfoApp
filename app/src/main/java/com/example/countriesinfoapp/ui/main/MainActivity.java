@@ -8,14 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.countriesinfoapp.R;
-import com.example.countriesinfoapp.data.DataRepository;
 import com.example.countriesinfoapp.ui.details.DetailActivity;
 import com.example.countriesinfoapp.utilities.FactoryUtils;
 

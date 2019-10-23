@@ -1,7 +1,5 @@
 package com.example.countriesinfoapp.data.database;
 
-import java.util.List;
-
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 

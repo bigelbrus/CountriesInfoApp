@@ -4,11 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.countriesinfoapp.AppExecutors;
 import com.example.countriesinfoapp.data.DataRepository;
-import com.example.countriesinfoapp.data.network.Country;
-
-import java.util.List;
 
 public class MainViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     private final DataRepository mRepository;
